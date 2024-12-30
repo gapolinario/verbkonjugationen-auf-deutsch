@@ -1,5 +1,5 @@
 
-This program reads an incomplete CSV table of conjugated verbs in German and fills it in with entries that are easily computed (all the past and future forms).
+This program reads an incomplete CSV table of conjugated verbs in German and fills it in with entries that are easily computed (past and future forms, except Präteritum).
 
 If a required entry is missing, an assertion error is thrown.
 

@@ -39,24 +39,28 @@ def main():
     aux_pras = {
         "sein": ["bin", "bist", "ist", "sind", "seid", "sind"],
         "haben": ["habe", "hast", "hat", "haben", "habt", "haben"],
+        "haben/sein": ["habe/bin", "hast/bist", "hat/ist", "haben/sind", "habt/seid", "haben/sind"],
         "werden": ["werde", "wirst", "wird", "werden", "werdet", "werden"],
     }
 
     aux_prat = {
         "sein": ["war", "warst", "war", "waren", "wart", "waren"],
         "haben": ["hatte", "hattest", "hatte", "hatten", "hattet", "hatten"],
+        "haben/sein": ["hatte/war", "hattest/warst", "hatte/war", "hatten/waren", "hattet/wart", "hatten/waren"],
         "werden": ["wurde", "wurdest", "wurde", "wurden", "wurdet", "wurden"],
     }
 
     aux_k1pras = {
         "sein": ["sei", "seiest", "sei", "seien", "seiet", "seien"],
         "haben": ["habe", "habest", "habe", "haben", "habet", "haben"],
+        "haben/sein": ["habe/sei", "habest/seiest", "habe/sei", "haben/seien", "habet/seiet", "haben/seien"],
         "werden": ["werde", "werdest", "werde", "werden", "werdet", "werden"],
     }
 
     aux_k2prat = {
         "sein": ["wäre", "wärst", "wäre", "wären", "wärt", "wären"],
         "haben": ["hätte", "hättest", "hätte", "hätten", "hättet", "hätten"],
+        "haben/sein": ["hätte/wäre", "hättest/wärest", "hätte/wäre", "hätten/wären", "hättet/wärt", "hätten/wären"],
         "werden": ["würde", "würdest", "würde", "würden", "würdet", "würden"],
     }
 
@@ -103,11 +107,15 @@ def main():
 
             if line[90] != "":
                 verb_aux = line[90]
-                assert verb_aux == "sein" or verb_aux == "haben"
+                try:
+                    assert verb_aux == "sein" or verb_aux == "haben" or verb_aux == "haben/sein"
+                except AssertionError:
+                    print(f"Auxiliary verb must be sein or haben. Received {verb_aux}")
+                    exit(1)
             else:
-                raise ValueError(
-                    f"Auxiliary verb must be sein or haben. Received {verb_aux}"
-                )
+                raise ValueError(f"Auxiliary verb for {verb_inf} is empty")
+
+                
 
             label = "Perfekt"
             start = 15
@@ -229,6 +237,23 @@ def main():
             start = 87
             for i in range(3):
                 assert line[start + i] != ""
+
+            """
+            # this is not trivial, because it needs to know the
+            # separable prefix of the verb. the other tenses don't
+
+            label = "Imperativ Sie"
+            start = 89
+            new = " ".join(
+                [verb_inf,"Sie!",sep_prefix]
+            )
+            if line[start + i] == "":
+                line[start + i] = new
+            else:
+                check_written(label, persons, line, start-5, 5, new)
+            """
+
+            assert np.all(line != "")
 
     np.savetxt(output, table, delimiter=";", fmt="%s")
 
