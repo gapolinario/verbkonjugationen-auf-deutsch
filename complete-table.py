@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import numpy as np
 import re
+from collections import Counter
 
 
 def check_written(label, persons, line, start, i, new):
@@ -28,6 +29,13 @@ def check_written(label, persons, line, start, i, new):
         print(
             f"{label}, computed: {persons[i]} {new}, written: {persons[i]} {line[start+i]}"
         )
+
+
+def check_duplicates(verbs):
+    # https://stackoverflow.com/a/11236042
+    dupes = [k for k, v in Counter(verbs).items() if v > 1]
+    if len(dupes) > 0:
+        print(f"Duplicates: {dupes}")
 
 
 def main():
@@ -102,6 +110,9 @@ def main():
     output2 = "Anki_Deutsch_Verbs_Complete.txt"
 
     table = np.loadtxt(input, delimiter=";", dtype=object)
+
+    verb_list = table[:, 0]
+    check_duplicates(verb_list)
 
     for line in table:
 
