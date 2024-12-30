@@ -105,9 +105,11 @@ def main():
                 verb_aux = line[90]
                 assert verb_aux == "sein" or verb_aux == "haben"
             else:
-                raise ValueError("error")
+                raise ValueError(
+                    f"Auxiliary verb must be sein or haben. Received {verb_aux}"
+                )
 
-            # 15-20. Perfekt
+            label = "Perfekt"
             start = 15
             for i in range(6):
                 new = " ".join([aux_pras[verb_aux][i], aux_refl[refl][i], verb_p2])
@@ -115,9 +117,9 @@ def main():
                 if line[start + i] == "":
                     line[start + i] = new
                 else:
-                    check_written("Perf", persons, line, start, i, new)
+                    check_written(label, persons, line, start, i, new)
 
-            # 21-26. Plusquamperfekt
+            label = "Plusquamperfekt"
             start = 21
             for i in range(6):
                 new = " ".join([aux_prat[verb_aux][i], aux_refl[refl][i], verb_p2])
@@ -125,9 +127,9 @@ def main():
                 if line[start + i] == "":
                     line[start + i] = new
                 else:
-                    check_written("Plusq", persons, line, start, i, new)
+                    check_written(label, persons, line, start, i, new)
 
-            # 27-32. Futur I
+            label = "Futur I"
             start = 27
             for i in range(6):
                 new = " ".join([aux_pras["werden"][i], aux_refl[refl][i], verb_inf])
@@ -135,9 +137,9 @@ def main():
                 if line[start + i] == "":
                     line[start + i] = new
                 else:
-                    check_written("FI", persons, line, start, i, new)
+                    check_written(label, persons, line, start, i, new)
 
-            # 33-38. Futur II
+            label = "Futur II"
             start = 33
             for i in range(6):
                 new = " ".join(
@@ -147,14 +149,14 @@ def main():
                 if line[start + i] == "":
                     line[start + i] = new
                 else:
-                    check_written("FII", persons, line, start, i, new)
+                    check_written(label, persons, line, start, i, new)
 
             label = "KI Präs"
             start = 39
             for i in range(6):
                 assert line[start + i] != ""
 
-            # 45-50. KI Perfekt
+            label = "KI Perf"
             start = 45
             for i in range(6):
                 new = " ".join([aux_k1pras[verb_aux][i], aux_refl[refl][i], verb_p2])
@@ -162,7 +164,7 @@ def main():
                 if line[start + i] == "":
                     line[start + i] = new
                 else:
-                    check_written("KI Perf", persons, line, start, i, new)
+                    check_written(label, persons, line, start, i, new)
 
             label = "KI FI"
             start = 51
