@@ -35,7 +35,14 @@ def check_duplicates(verbs):
     # https://stackoverflow.com/a/11236042
     dupes = [k for k, v in Counter(verbs).items() if v > 1]
     if len(dupes) > 0:
-        print(f"Duplicates: {dupes}")
+        print(f"Duplicates: {', '.join(dupes)}")
+
+
+def delete_list_from_list(lista,listb,offset=0):
+    # remove all elements in lista
+    # that are also elements of listb
+    X = [item for item in lista if (item-offset) not in listb]
+    return np.array(X)
 
 
 def main():
@@ -116,14 +123,25 @@ def main():
 
     for line in table:
 
-        assert len(line) == 91
+        len_array = 92
+        assert len(line) == len_array
 
         verb_inf = line[0]
+        bool_impersonal = line[-1] == "TRUE"
+
+        if not bool_impersonal:
+            range_start = np.arange(1, 15)
+            range_persons = np.arange(6)
+            range_imperativ = np.arange(3)
+        else:
+            range_start = [1, 2, 5, 8, 11, 14]
+            range_persons = [2, 5]
+            range_imperativ = []
 
         # Some verbs have an explanatory/disambiguating parentheses
         if len(re.split(r" \(", verb_inf)) == 2:
             verb_inf = re.split(r" \(", verb_inf)[0]
-        
+
         verb_p2 = line[2]
 
         if re.search(r"^sich\s\w", verb_inf) != None:
@@ -139,11 +157,11 @@ def main():
         # 2. Partizip II
         # 3-8. Präsens
         # 9-14. Präteritum
-        for i in range(1, 15):
+        for i in range_start:
             assert line[i] != ""
 
-        if line[90] != "":
-            verb_aux = line[90]
+        if line[-2] != "":
+            verb_aux = line[-2]
             try:
                 assert (
                     verb_aux == "sein"
@@ -158,7 +176,7 @@ def main():
 
         label = "Perfekt"
         start = 15
-        for i in range(6):
+        for i in range_persons:
             new = " ".join([aux_pras[verb_aux][i], aux_refl[refl][i], verb_p2])
             new = re.sub(r"\s+", " ", new)
             if line[start + i] == "":
@@ -168,7 +186,7 @@ def main():
 
         label = "Plusquamperfekt"
         start = 21
-        for i in range(6):
+        for i in range_persons:
             new = " ".join([aux_prat[verb_aux][i], aux_refl[refl][i], verb_p2])
             new = re.sub(r"\s+", " ", new)
             if line[start + i] == "":
@@ -178,7 +196,7 @@ def main():
 
         label = "Futur I"
         start = 27
-        for i in range(6):
+        for i in range_persons:
             new = " ".join([aux_pras["werden"][i], aux_refl[refl][i], verb_inf])
             new = re.sub(r"\s+", " ", new)
             if line[start + i] == "":
@@ -188,7 +206,7 @@ def main():
 
         label = "Futur II"
         start = 33
-        for i in range(6):
+        for i in range_persons:
             new = " ".join(
                 [aux_pras["werden"][i], aux_refl[refl][i], verb_p2, verb_aux]
             )
@@ -200,12 +218,12 @@ def main():
 
         label = "KI Präs"
         start = 39
-        for i in range(6):
+        for i in range_persons:
             assert line[start + i] != ""
 
         label = "KI Perf"
         start = 45
-        for i in range(6):
+        for i in range_persons:
             new = " ".join([aux_k1pras[verb_aux][i], aux_refl[refl][i], verb_p2])
             new = re.sub(r"\s+", " ", new)
             if line[start + i] == "":
@@ -215,7 +233,7 @@ def main():
 
         label = "KI FI"
         start = 51
-        for i in range(6):
+        for i in range_persons:
             new = " ".join([aux_k1pras["werden"][i], aux_refl[refl][i], verb_inf])
             new = re.sub(r"\s+", " ", new)
             if line[start + i] == "":
@@ -225,7 +243,7 @@ def main():
 
         label = "KI FII"
         start = 57
-        for i in range(6):
+        for i in range_persons:
             new = " ".join(
                 [aux_k1pras["werden"][i], aux_refl[refl][i], verb_p2, verb_aux]
             )
@@ -237,12 +255,12 @@ def main():
 
         label = "KII Prät"
         start = 63
-        for i in range(6):
+        for i in range_persons:
             assert line[start + i] != ""
 
         label = "KII Plusq"
         start = 69
-        for i in range(6):
+        for i in range_persons:
             new = " ".join([aux_k2prat[verb_aux][i], aux_refl[refl][i], verb_p2])
             new = re.sub(r"\s+", " ", new)
             if line[start + i] == "":
@@ -252,7 +270,7 @@ def main():
 
         label = "KII FI"
         start = 75
-        for i in range(6):
+        for i in range_persons:
             new = " ".join([aux_k2prat["werden"][i], aux_refl[refl][i], verb_inf])
             new = re.sub(r"\s+", " ", new)
             if line[start + i] == "":
@@ -262,7 +280,7 @@ def main():
 
         label = "KII FII"
         start = 81
-        for i in range(6):
+        for i in range_persons:
             new = " ".join(
                 [aux_k2prat["werden"][i], aux_refl[refl][i], verb_p2, verb_aux]
             )
@@ -274,7 +292,7 @@ def main():
 
         label = "Imperativ"
         start = 87
-        for i in range(3):
+        for i in range_imperativ:
             assert line[start + i] != ""
 
         """
@@ -292,9 +310,28 @@ def main():
             check_written(label, persons, line, start-5, 5, new)
         """
 
-        assert np.all(line != "")
+        # for impersonal verbs, some entries must be empty
+        if bool_impersonal:
+            range_empty = np.arange(1,len_array-2)
+            range_empty = delete_list_from_list(range_empty,range_start)
+            for a in range(15,82,6):
+                range_empty = delete_list_from_list(range_empty,range_persons,a)
+            range_empty = delete_list_from_list(range_empty,range_imperativ,87)
 
-    np.savetxt(output, table, delimiter=";", fmt="%s")
+            for i in range_empty:
+                assert line[i] == ""
+        
+            range_full = np.arange(len_array)
+            range_full = delete_list_from_list(range_full,range_empty)
+
+            for i in range_full:
+                assert line[i] != ""
+        
+        # for other verbs, all entries must be non empty
+        else:
+            assert np.all(line != "")
+
+    np.savetxt(output, table[:, :-2], delimiter=";", fmt="%s")
 
     with open(output, "r") as file:
         data = file.read()
