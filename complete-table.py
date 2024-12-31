@@ -1,5 +1,6 @@
 """
 Loads table of conjugated verbs and completes the conjugation
+
 Copyright (C) 2024 Gabriel B. Apolinário
 
 This program is free software: you can redistribute it and/or modify
@@ -46,8 +47,6 @@ def delete_list_from_list(lista,listb,offset=0):
 
 
 def main():
-
-    header = f"#tags: deutsch verbs\n#deck: _Default::Deutsch-Verben\n#notetype: Deutsch-Verb\n#separator: Semicolon\n\n"
 
     persons = ["Ich", "Du", "Er/Sie/Dey/Es", "Wir", "Ihr", "Sie"]
 
@@ -114,8 +113,7 @@ def main():
 
     input = "Anki_Deutsch_Verbs.csv"
     output = "Anki_Deutsch_Verbs_Complete.csv"
-    output2 = "Anki_Deutsch_Verbs_Complete.txt"
-
+    
     table = np.loadtxt(input, delimiter=";", dtype=object)
 
     verb_list = table[:, 0]
@@ -332,13 +330,6 @@ def main():
             assert np.all(line != "")
 
     np.savetxt(output, table[:, :-2], delimiter=";", fmt="%s")
-
-    with open(output, "r") as file:
-        data = file.read()
-
-    with open(output2, "w") as file:
-        file.write(header)
-        file.write(data)
 
     print("Conjugations finished!")
 
