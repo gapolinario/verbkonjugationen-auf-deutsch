@@ -120,10 +120,10 @@ def main():
 
         verb_inf = line[0]
 
-        # Deal with werden separately
-        if re.search(r"^werden", verb_inf) != None:
-            verb_inf = "werden"
-
+        # Some verbs have an explanatory/disambiguating parentheses
+        if len(re.split(r" \(", verb_inf)) == 2:
+            verb_inf = re.split(r" \(", verb_inf)[0]
+        
         verb_p2 = line[2]
 
         if re.search(r"^sich\s\w", verb_inf) != None:
