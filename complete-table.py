@@ -151,7 +151,7 @@ def main():
                     or verb_aux == "haben/sein"
                 )
             except AssertionError:
-                print(f"Auxiliary verb must be sein or haben. Received {verb_aux}")
+                print(f"Invalid auxiliary verb. Received {verb_aux}")
                 exit(1)
         else:
             raise ValueError(f"Auxiliary verb for {verb_inf} is empty")
