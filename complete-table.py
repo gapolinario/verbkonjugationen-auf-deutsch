@@ -294,6 +294,22 @@ def main():
             assert line[start + i] != ""
 
         """
+        more asserts?
+        prasens ich ends with e
+        prasens du with st or ßt
+        prasens er with t
+        prasens wir with en
+        prasens ihr with t
+        prasens sie with en
+        prateritum ich ends with e
+        prateritum du with st or ßt
+        prateritum er with e
+        prateritum wir with en
+        prateritum ihr with t
+        prateritum sie with en
+        """
+
+        """
         # this is not trivial, because it needs to know the
         # separable prefix of the verb. the other tenses don't
 

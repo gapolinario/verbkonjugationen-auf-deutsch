@@ -1,5 +1,5 @@
 
-This program reads an incomplete CSV table of conjugated verbs in German and fills it in with entries that are easily computed (past and future forms, except Präteritum).
+These programs reads an incomplete CSV table of conjugated verbs in German and fills it in with entries that are easily computed (past and future forms, except Präteritum).
 
 Usage: `python complete-table.py`
 
@@ -13,9 +13,8 @@ With `python export-abridged.py`, a shorter .txt file is generated. It contains 
 
 It is impractical to study the full .txt file. Instead, it is meant as a source for self assessment, by randomly drawing cards from it. To learn the conjugations for new verbs, the shorter version is preferred.
 
-Both .txt files can be imported to anki. I have not yet added the card templates to the repository.
+Both .txt files can be imported to anki. The abridged file can be imported with the standard Cloze card template. I have not yet added the card templates for the full table  to this repository.
 
 ## TODO
 
-1. Complete table, add CSV table, add TXT file
-2. Add anki card template
+1. Add anki card template
