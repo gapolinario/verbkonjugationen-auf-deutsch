@@ -29,7 +29,12 @@ def main():
     output = "Anki_Deutsch_Verbs_Abridged.txt"
 
     table = np.loadtxt(input, delimiter=";", dtype=object)
-    table = table[:, [0, 5, 9, 20]]
+    # 0. infinitiv
+    # 5. er/sie präsens
+    # 9. ich präteritum
+    # 20. sie perfekt 
+    # 11. er/sie präteritum, needed for impersonal verbs
+    table = table[:, [0, 5, 9, 20, 11]]
 
     with open(output, "w") as file:
         file.write(header)
@@ -41,8 +46,12 @@ def main():
 
         # Präteritum
         for line in table:
-            s = "Ich {{c1::" + f"{line[2]}" + "::" + f"{line[0]}" + ", Präteritum}};\n"
-            file.write(s)
+            if line[2] != "":
+                s = "Ich {{c1::" + f"{line[2]}" + "::" + f"{line[0]}" + ", Präteritum}};\n"
+                file.write(s)
+            else:
+                s = "Er/Sie {{c1::" + f"{line[4]}" + "::" + f"{line[0]}" + ", Präteritum}};\n"
+                file.write(s)
 
         # Perfekt
         for line in table:

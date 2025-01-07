@@ -18,3 +18,4 @@ Both .txt files can be imported to anki. The abridged file can be imported with 
 ## TODO
 
 1. Add anki card template
+2. Some verbs are impersonal. 

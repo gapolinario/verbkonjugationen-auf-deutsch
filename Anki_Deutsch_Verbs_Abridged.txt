@@ -260,7 +260,7 @@ Ich {{c1::fehlte::fehlen, Präteritum}};
 Ich {{c1::fand::finden, Präteritum}};
 Ich {{c1::flog::fliegen, Präteritum}};
 Ich {{c1::floh::fliehen, Präteritum}};
-Ich {{c1::::fließen, Präteritum}};
+Er/Sie {{c1::floss::fließen, Präteritum}};
 Ich {{c1::folgte::folgen, Präteritum}};
 Ich {{c1::fragte::fragen, Präteritum}};
 Ich {{c1::fraß::fressen, Präteritum}};
